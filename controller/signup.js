@@ -21,7 +21,7 @@ const signUp = async (req, res) => {
             throw user
         }
 
-        res.json({ status: "success", statusCode: 200, message: "Thanks for joining to us" });
+        res.json({ status: "success", statusCode: 200, message: "Thanks for joining to us", user });
 
     } catch (error) {
         res.json({ status: "failed", statusCode: 403, message: error.message })

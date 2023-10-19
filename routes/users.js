@@ -8,6 +8,7 @@ var router = express.Router();
 router.post('/login', [
     check("email", "Please fill email properly").isEmail()
 ], login);
+
 router.post("/sign-up", [
     check("email", "Please fill email properly").isEmail()
 ], signUp)

@@ -9,16 +9,7 @@ const encyrptPass = async (password) => {
 
 const compare = async (password, hashPw) => {
     const isCorrect = await bcrypt.compare(password, hashPw);
-    try {
-        if (!isCorrect) {
-            const err = new Error("Wrong password!");
-            throw err
-        }
-
-        return true
-    } catch (error) {
-        return { status: "failed", statusCode: 403, message: error.message }
-    }
+    return isCorrect
 }
 
 module.exports = { encyrptPass, compare }

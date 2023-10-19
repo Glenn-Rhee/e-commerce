@@ -4,15 +4,17 @@ const { encyrptPass } = require("../password/password");
 
 const signUpController = async ({ username, password, email }) => {
     try {
-        const isRegistered = await User.findOne({ username });
+        const isRegistered = await User.findOne({ where: { username } });
         if (isRegistered) {
             const err = new Error("Username already registered")
             throw err;
         }
 
+        console.log(isRegistered);
+
         const encryptPass = await encyrptPass(password);
         const data = { username, email, password: encryptPass };
-        const user = User.create(data);
+        const user = await User.create(data);
         return user;
 
     } catch (error) {
@@ -22,7 +24,8 @@ const signUpController = async ({ username, password, email }) => {
 
 const loginController = async ({ email, password }) => {
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ where: { email } });
+        console.log(user);
         if (!user) {
             const err = new Error("Unregistered Email");
             throw err
@@ -30,10 +33,12 @@ const loginController = async ({ email, password }) => {
 
         const hash = await user.password;
         const isCorrect = await compare(password, hash);
-        if (!isCorrect) throw isCorrect;
+        if (!isCorrect) {
+            const err = new Error("Wrong Password!");
+            throw err
+        };
 
-        
-
+        return user
     } catch (error) {
         return { status: "failed", statusCode: 403, message: error.message || "INTERNAL SERVER ERROR!" }
     }
