@@ -24,7 +24,6 @@ const login = async (req, res) => {
 
         res.json({ status: "success", statusCode: 200, message: "Success login", user })
     } catch (error) {
-        console.log(error);
         res.json({ status: "failed", statusCode: 403, message: error.message })
     }
 

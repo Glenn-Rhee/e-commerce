@@ -1,6 +1,7 @@
 const { compare } = require("bcrypt");
 const User = require("../../models/User");
 const { encyrptPass } = require("../password/password");
+const UserCart = require("../../models/UserCart");
 
 const signUpController = async ({ username, password, email }) => {
     try {
@@ -10,11 +11,14 @@ const signUpController = async ({ username, password, email }) => {
             throw err;
         }
 
-        console.log(isRegistered);
-
         const encryptPass = await encyrptPass(password);
         const data = { username, email, password: encryptPass };
         const user = await User.create(data);
+        const newUser = UserCart({
+            username,
+            cart: []
+        })
+        await newUser.save();
         return user;
 
     } catch (error) {
@@ -25,7 +29,6 @@ const signUpController = async ({ username, password, email }) => {
 const loginController = async ({ email, password }) => {
     try {
         const user = await User.findOne({ where: { email } });
-        console.log(user);
         if (!user) {
             const err = new Error("Unregistered Email");
             throw err
