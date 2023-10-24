@@ -6,4 +6,8 @@ const UserCart = mongoose.model("UserCart", {
     cart: []
 })
 
-module.exports = UserCart
+const phoneCart = mongoose.model("phone", {
+    phone: []
+})
+
+module.exports = { UserCart, phoneCart }
